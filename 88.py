@@ -11,13 +11,14 @@ class Solution(object):
         """
         i, j, idx = m - 1, n - 1, m + n - 1
         while j >= 0:
-            if nums1[i] > nums2[j]:
+            if i >= 0 and nums1[i] > nums2[j]:
                 nums1[idx] = nums1[i]
                 i -= 1
             else:
                 nums1[idx] = nums2[j]
                 j -= 1
             idx -= 1
+        print nums1
 
 s = Solution()
 s.merge([1,7,99,99, 0, 0, 0, 0], 4, [2,4,6,8], 4)
