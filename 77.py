@@ -31,5 +31,21 @@ class Solution(object):
         else:
             dfs(k, [])
             return ans
+
+    def combine2(self, n, k):
+        """
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+
+        def search(cur, remain):
+            if remain == 0:
+                return [[]]
+            return [[c] + next
+                    for c in range(cur, n+2-remain)
+                    for next in search(c+1, remain-1)]
+        return search(1, k)
+
 s=Solution()
-print len(s.combine(20,5))
+print s.combine2(4,2)

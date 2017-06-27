@@ -9,38 +9,35 @@ class Solution(object):
         :type nums2: List[int]
         :rtype: float
         """
-        inf = 99999999
-        if len(nums1) < len(nums2):
-            nums1, nums2 = nums2, nums1
+        def query(array, idx):
+            if idx < 0:
+                return -99999999
+            if idx >= len(array):
+                return 99999999
+            return array[idx]
+        m, n = len(nums1), len(nums2)
+        k, is_odd = (m+n-1) / 2, (m+n) % 2
 
-        m = len(nums1)
-        n = len(nums2)
-        k = (m+n) // 2
+        if not m:
+            return nums2[k] if is_odd else sum(nums2[k:k+2]) / 2.
+        if not n:
+            return nums1[k] if is_odd else sum(nums1[k:k+2]) / 2.
 
-        nums1.append(inf)
-        nums2.append(inf)
-        nums1.insert(0, -inf)
-        nums2.insert(0, -inf)
+        l, r = -1, m
 
-        j = n
-        i = k - n
-        l, r = 0, n+1
+        while True:
+            p, q = (l+r) / 2, k - (l+r)/2 - 1
 
-        # print nums1, nums2
-        while not (min(nums1[i+1], nums2[j+1]) >= max(nums1[i], nums2[j])):
-            # print j
-            if (max(nums1[i], nums2[j]) == nums2[j]):
-                r = j
-                j = l + (j - l) // 2
-                i = k - j
-            else:
-                l = j
-                j = j + (r - j) // 2
-                i = k - j
-
-        if (m+n) % 2 == 0:
-            return (max(nums1[i], nums2[j])+min(nums1[i+1], nums2[j+1]))/2.0
-        return min(nums1[i+1], nums2[j+1])
+            a = query(nums1, p)
+            b = query(nums1, p+1)
+            c = query(nums2, q)
+            d = query(nums2, q+1)
+            if max(a, c) <= min(b, d):
+                return max(a, c) if is_odd else (max(a, c)+min(b, d)) / 2.
+            if a > d:
+                r = p
+            elif c > b:
+                l = p + 1
 
 s = Solution()
-print s.findMedianSortedArrays([1,4,5],[2,3,6])
+print s.findMedianSortedArrays([2,], [1])
