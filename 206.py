@@ -10,15 +10,7 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
-        if head is None:
-            return None
-        tail = head
-        while tail.next:
-            tail = tail.next
-        cur = head
-        while cur is not tail:
-            next = cur.next
-            cur.next = tail.next
-            tail.next = cur
-            cur = next
-        return tail
+        dummy = ListNode(0)
+        while head:
+            head.next, head, dummy.next = dummy.next, head.next, head
+        return dummy.next

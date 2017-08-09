@@ -5,6 +5,22 @@
 #         self.left = None
 #         self.right = None
 
+def traversal(root, k):
+    total_num = 0
+    if root.left is not None:
+        total_num, target = traversal(root.left, k)
+        if target is not None:
+            return -1, target
+    if total_num == k-1:
+        return -1, root.val
+    total_num += 1
+    if root.right is not None:
+        right_num, target = traversal(root.right, k-total_num)
+        total_num += right_num
+        if target is not None:
+            return -1, target
+    return total_num, None
+
 class Solution(object):
     def kthSmallest(self, root, k):
         """
@@ -12,26 +28,20 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
-        global count
-        count = 0
-        ans = -1
-        def dfs(root):
-            global count
-            if not root.left and not root.right:
-                count += 1
-                if count == k:
-                    return root.val
-                return None
-            if root.left:
-                a = dfs(root.left)
-                if a is not None:
-                    return a
-            count += 1
-            if count == k:
-                return root.val
-            if root.right:
-                b = dfs(root.right)
-                if b is not None:
-                    return b
-            return None
-        return dfs(root)
+        return traversal(root, k)[1]
+
+    def kthSmallest_2(self, root, k):
+        stack = []
+        while root:
+            stack.append(root)
+            root = root.left
+        while k > 0:
+            item = stack.pop()
+            succ = item.right
+            while succ:
+                stack.append(succ)
+                succ = succ.left
+            k -= 1
+        return item.val
+
+

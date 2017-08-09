@@ -9,10 +9,11 @@ class Solution(object):
         if divisor == 0 or (dividend == -2**31 and divisor == -1):
             return 2**31-1
         ans = 0
-        if (dividend > 0 and divisor > 0) or (dividend < 0 and divisor < 0):
+        if dividend * divisor >= 0:
             flag = 1
         else:
             flag = -1
+
         dividend, divisor = abs(dividend), abs(divisor)
 
         while dividend >= divisor:
